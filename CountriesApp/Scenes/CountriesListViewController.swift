@@ -42,6 +42,11 @@ class CountriesListViewController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
     }
     
+    private func sortCountriesByName() {
+        info.sort { $0.name.common ?? "" < $1.name.common ?? "" }
+        //tableView.reloadData()
+    }
+    
     //MARK: Data Fetching
     private func fetchData() {
         let url = "https://restcountries.com/v3.1/all"
@@ -49,6 +54,7 @@ class CountriesListViewController: UIViewController {
             switch result {
             case .success(let info):
                 self?.info = info
+                self?.sortCountriesByName()
                 DispatchQueue.main.async {
                     self?.tableView.reloadData()
                 }
