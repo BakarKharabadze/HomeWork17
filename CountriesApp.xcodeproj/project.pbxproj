@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		FB9311CF2BD67F52001AD872 /* ImageLoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB9311CE2BD67F52001AD872 /* ImageLoadingViewController.swift */; };
+		FB828BC52BD95CC300680969 /* CountriesListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB828BC42BD95CC300680969 /* CountriesListViewModel.swift */; };
+		FB828BCA2BD969FD00680969 /* CountryDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB828BC92BD969FD00680969 /* CountryDetailViewModel.swift */; };
+		FB9311CF2BD67F52001AD872 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB9311CE2BD67F52001AD872 /* UIImageView+Extension.swift */; };
 		FBF4F8982BD53F15006B1C81 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF4F8972BD53F15006B1C81 /* AppDelegate.swift */; };
 		FBF4F89A2BD53F15006B1C81 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF4F8992BD53F15006B1C81 /* SceneDelegate.swift */; };
 		FBF4F89C2BD53F15006B1C81 /* CountriesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF4F89B2BD53F15006B1C81 /* CountriesListViewController.swift */; };
@@ -19,7 +21,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		FB9311CE2BD67F52001AD872 /* ImageLoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoadingViewController.swift; sourceTree = "<group>"; };
+		FB828BC42BD95CC300680969 /* CountriesListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesListViewModel.swift; sourceTree = "<group>"; };
+		FB828BC92BD969FD00680969 /* CountryDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryDetailViewModel.swift; sourceTree = "<group>"; };
+		FB9311CE2BD67F52001AD872 /* UIImageView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
 		FBF4F8942BD53F15006B1C81 /* CountriesApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CountriesApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FBF4F8972BD53F15006B1C81 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FBF4F8992BD53F15006B1C81 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -43,6 +47,34 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		FB828BC62BD969B800680969 /* ContriesList */ = {
+			isa = PBXGroup;
+			children = (
+				FB9311D22BD68D36001AD872 /* Cell */,
+				FBF4F89B2BD53F15006B1C81 /* CountriesListViewController.swift */,
+				FB828BC42BD95CC300680969 /* CountriesListViewModel.swift */,
+			);
+			path = ContriesList;
+			sourceTree = "<group>";
+		};
+		FB828BC72BD969C900680969 /* CountriesDetails */ = {
+			isa = PBXGroup;
+			children = (
+				FBF4F8AF2BD55218006B1C81 /* CountryDetailViewController.swift */,
+				FB828BC92BD969FD00680969 /* CountryDetailViewModel.swift */,
+			);
+			path = CountriesDetails;
+			sourceTree = "<group>";
+		};
+		FB828BCB2BD970E200680969 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				FBF4F8A02BD53F17006B1C81 /* Assets.xcassets */,
+				FBF4F8A22BD53F17006B1C81 /* LaunchScreen.storyboard */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		FB9311D02BD68CC3001AD872 /* App */ = {
 			isa = PBXGroup;
 			children = (
@@ -71,18 +103,18 @@
 		FB9311D32BD68D5C001AD872 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
-				FBF4F89B2BD53F15006B1C81 /* CountriesListViewController.swift */,
-				FBF4F8AF2BD55218006B1C81 /* CountryDetailViewController.swift */,
+				FB828BC72BD969C900680969 /* CountriesDetails */,
+				FB828BC62BD969B800680969 /* ContriesList */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
 		};
-		FB9311D42BD68E43001AD872 /* ImageLoading */ = {
+		FB9311D42BD68E43001AD872 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				FB9311CE2BD67F52001AD872 /* ImageLoadingViewController.swift */,
+				FB9311CE2BD67F52001AD872 /* UIImageView+Extension.swift */,
 			);
-			path = ImageLoading;
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		FBF4F88B2BD53F15006B1C81 = {
@@ -106,11 +138,9 @@
 			children = (
 				FB9311D02BD68CC3001AD872 /* App */,
 				FB9311D32BD68D5C001AD872 /* Scenes */,
-				FB9311D22BD68D36001AD872 /* Cell */,
 				FB9311D12BD68CEC001AD872 /* Models */,
-				FB9311D42BD68E43001AD872 /* ImageLoading */,
-				FBF4F8A02BD53F17006B1C81 /* Assets.xcassets */,
-				FBF4F8A22BD53F17006B1C81 /* LaunchScreen.storyboard */,
+				FB9311D42BD68E43001AD872 /* Extensions */,
+				FB828BCB2BD970E200680969 /* Resources */,
 				FBF4F8A52BD53F17006B1C81 /* Info.plist */,
 			);
 			path = CountriesApp;
@@ -188,11 +218,13 @@
 			files = (
 				FBF4F89C2BD53F15006B1C81 /* CountriesListViewController.swift in Sources */,
 				FBF4F8982BD53F15006B1C81 /* AppDelegate.swift in Sources */,
-				FB9311CF2BD67F52001AD872 /* ImageLoadingViewController.swift in Sources */,
+				FB9311CF2BD67F52001AD872 /* UIImageView+Extension.swift in Sources */,
+				FB828BC52BD95CC300680969 /* CountriesListViewModel.swift in Sources */,
 				FBF4F8AC2BD540AC006B1C81 /* CountriesCellsTableViewCell.swift in Sources */,
 				FBF4F89A2BD53F15006B1C81 /* SceneDelegate.swift in Sources */,
 				FBF4F8B02BD55218006B1C81 /* CountryDetailViewController.swift in Sources */,
 				FBF4F8AE2BD5499D006B1C81 /* Country.swift in Sources */,
+				FB828BCA2BD969FD00680969 /* CountryDetailViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -334,8 +366,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CountriesApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -349,6 +382,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = TBC.CountriesApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -360,8 +394,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CountriesApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -375,6 +410,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = TBC.CountriesApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

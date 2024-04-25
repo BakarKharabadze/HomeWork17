@@ -20,6 +20,7 @@ class CountriesCellsTableViewCell: UITableViewCell {
     // MARK: - Initialization
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        contentView.backgroundColor = UIColor(named: "backgroundColor")
         setupSeparatorView()
         setupMainStackView()
         setupFlag()
@@ -27,8 +28,14 @@ class CountriesCellsTableViewCell: UITableViewCell {
         setupCountryLabel()
         setupArrowImageView()
     }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        mainStackView.layer.borderColor = UIColor(named: "borderColor")?.resolvedColor(with: self.traitCollection).cgColor
     }
     
     //MARK: Setup Methods
@@ -38,6 +45,7 @@ class CountriesCellsTableViewCell: UITableViewCell {
         mainStackView.distribution = .equalSpacing
         mainStackView.layer.cornerRadius = 20
         mainStackView.layer.borderWidth = 1.5
+        mainStackView.layer.borderColor = UIColor(named: "borderColor")?.resolvedColor(with: self.traitCollection).cgColor
         
         mainStackView.isLayoutMarginsRelativeArrangement = true
         mainStackView.layoutMargins = UIEdgeInsets(top: 15, left: 24, bottom: 15, right: 0)
@@ -64,7 +72,7 @@ class CountriesCellsTableViewCell: UITableViewCell {
     
     private func setupCountryLabel() {
         countryNameLabel.font = UIFont.systemFont(ofSize: 14)
-        countryNameLabel.textColor = .black
+        countryNameLabel.textColor = UIColor(named: "textColor")
     }
     
     private func setupArrowImageView() {

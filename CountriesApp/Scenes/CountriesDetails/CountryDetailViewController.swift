@@ -44,30 +44,32 @@ class CountryDetailViewController: UIViewController {
     private let buttonsStackView = UIStackView()
     private let mapButton = UIButton()
     private let googleMapButton = UIButton()
-    var info: Country?
+    var viewModel: CountryDetailViewModel?
     
     // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "backgroundColor")
         setup()
         set()
+        viewModel?.delegate = self
     }
     
     func set() {
-        countryName.text = info?.name.official
-        guard let flag = info?.flags?.png,
+        countryName.textColor = UIColor(named: "textColor")
+        countryName.text = viewModel?.info.name.official
+        guard let flag = viewModel?.info.flags?.png,
               let flagUrl = URL(string: flag) else {
             return
         }
         countryFlag.load(url: flagUrl)
-        flagDescriptionLabel.text = info?.flags?.alt
-        nativeNameAnswerLabel.text = info?.name.common
-        spellingAnswerLabel.text = info?.altSpellings?.first
-        capitalAnswerLabel.text = info?.capital?.first
-        currencyAnswerLabel.text = info?.currencies?.first?.key
-        regionAnswerLabel.text = info?.region
-        neighborsAnswerLabel.text = info?.borders?.joined(separator: ", ")
+        flagDescriptionLabel.text = viewModel?.info.flags?.alt
+        nativeNameAnswerLabel.text = viewModel?.info.name.common
+        spellingAnswerLabel.text = viewModel?.info.altSpellings?.first
+        capitalAnswerLabel.text = viewModel?.info.capital?.first
+        currencyAnswerLabel.text = viewModel?.info.currencies?.first?.key
+        regionAnswerLabel.text = viewModel?.info.region
+        neighborsAnswerLabel.text = viewModel?.info.borders?.joined(separator: ", ")
     }
     
     // MARK: Setup
@@ -165,14 +167,14 @@ class CountryDetailViewController: UIViewController {
     
     private func setupAboutTheFlagLabel() {
         aboutTheFlagLabel.text = "About the flag"
-        aboutTheFlagLabel.textColor = .black
+        aboutTheFlagLabel.textColor = UIColor(named: "textColor")
         aboutTheFlagLabel.font = .systemFont(ofSize: 16)
         
         mainStackView.addArrangedSubview(aboutTheFlagLabel)
     }
     
     private func setupFlagDescriptionLabel() {
-        flagDescriptionLabel.textColor = .black
+        flagDescriptionLabel.textColor = UIColor(named: "textColor")
         flagDescriptionLabel.font = .systemFont(ofSize: 14)
         flagDescriptionLabel.numberOfLines = 0
         
@@ -181,7 +183,7 @@ class CountryDetailViewController: UIViewController {
     
     private func setupSeperator() {
         seperatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
-        seperatorView.backgroundColor = .gray
+        seperatorView.backgroundColor = UIColor(named: "seperatorColor")
         
         seperatorStackView.addArrangedSubview(seperatorView)
     }
@@ -336,7 +338,7 @@ class CountryDetailViewController: UIViewController {
     
     private func setupBottomSeperator() {
         bottomSeperator.heightAnchor.constraint(equalToConstant: 1).isActive = true
-        bottomSeperator.backgroundColor = .gray
+        bottomSeperator.backgroundColor = UIColor(named: "seperatorColor")
         
         bottomSeperatorStackView.addArrangedSubview(bottomSeperator)
     }
@@ -367,8 +369,8 @@ class CountryDetailViewController: UIViewController {
         mapButton.layer.cornerRadius = 10
         let image = UIImage(named: "Map")
         mapButton.setImage(image, for: .normal)
-        let action = UIAction { action in
-            self.mapDidTap()
+        let action = UIAction { [weak self] _ in
+            self?.viewModel?.mapDidTap()
         }
         mapButton.addAction(action, for: .touchUpInside)
     }
@@ -382,29 +384,16 @@ class CountryDetailViewController: UIViewController {
         googleMapButton.layer.cornerRadius = 10
         let image = UIImage(named: "googleMap")
         googleMapButton.setImage(image, for: .normal)
-        let action = UIAction { action in
-            self.googleMapDidTap()
+        let action = UIAction { [weak self] _ in
+            self?.viewModel?.googleMapDidTap()
         }
         googleMapButton.addAction(action, for: .touchUpInside)
     }
-    
-    private func mapDidTap() {
-        guard let streetMaps = info?.maps?.openStreetMaps,
-              let map = URL(string: streetMaps) else  {
-            return
-        }
-        
-        let safariVC = SFSafariViewController(url: map)
-        present(safariVC, animated: true, completion: nil)
-    }
-    
-    private func googleMapDidTap() {
-        guard let googleMaps = info?.maps?.googleMaps,
-              let googleMap = URL(string: googleMaps) else {
-            return
-        }
-        
-        let safariVC = SFSafariViewController(url: googleMap)
+}
+
+extension CountryDetailViewController: CountryDetailViewModelDelegate {
+    func navigateToSafariViewController(with url: URL) {
+        let safariVC = SFSafariViewController(url: url)
         present(safariVC, animated: true, completion: nil)
     }
 }
