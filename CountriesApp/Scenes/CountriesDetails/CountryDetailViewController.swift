@@ -397,3 +397,4 @@ extension CountryDetailViewController: CountryDetailViewModelDelegate {
         present(safariVC, animated: true, completion: nil)
     }
 }
+

@@ -46,6 +46,7 @@ class CountriesCellsTableViewCell: UITableViewCell {
         mainStackView.layer.cornerRadius = 20
         mainStackView.layer.borderWidth = 1.5
         mainStackView.layer.borderColor = UIColor(named: "borderColor")?.resolvedColor(with: self.traitCollection).cgColor
+        mainStackView.backgroundColor = UIColor(named: "cellColor")
         
         mainStackView.isLayoutMarginsRelativeArrangement = true
         mainStackView.layoutMargins = UIEdgeInsets(top: 15, left: 24, bottom: 15, right: 0)
