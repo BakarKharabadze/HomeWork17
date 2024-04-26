@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FB3B2A892BDBE8FB0054B797 /* AuthorizationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB3B2A882BDBE8FB0054B797 /* AuthorizationViewController.swift */; };
+		FB3B2A8D2BDC3D0B0054B797 /* AuthorizationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB3B2A8C2BDC3D0B0054B797 /* AuthorizationViewModel.swift */; };
 		FB828BC52BD95CC300680969 /* CountriesListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB828BC42BD95CC300680969 /* CountriesListViewModel.swift */; };
 		FB828BCA2BD969FD00680969 /* CountryDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB828BC92BD969FD00680969 /* CountryDetailViewModel.swift */; };
 		FB9311CF2BD67F52001AD872 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB9311CE2BD67F52001AD872 /* UIImageView+Extension.swift */; };
@@ -21,6 +23,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		FB3B2A882BDBE8FB0054B797 /* AuthorizationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationViewController.swift; sourceTree = "<group>"; };
+		FB3B2A8C2BDC3D0B0054B797 /* AuthorizationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationViewModel.swift; sourceTree = "<group>"; };
 		FB828BC42BD95CC300680969 /* CountriesListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountriesListViewModel.swift; sourceTree = "<group>"; };
 		FB828BC92BD969FD00680969 /* CountryDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryDetailViewModel.swift; sourceTree = "<group>"; };
 		FB9311CE2BD67F52001AD872 /* UIImageView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
@@ -47,6 +51,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		FB3B2A872BDBE8900054B797 /* AuthorizationPage */ = {
+			isa = PBXGroup;
+			children = (
+				FB3B2A882BDBE8FB0054B797 /* AuthorizationViewController.swift */,
+				FB3B2A8C2BDC3D0B0054B797 /* AuthorizationViewModel.swift */,
+			);
+			path = AuthorizationPage;
+			sourceTree = "<group>";
+		};
 		FB828BC62BD969B800680969 /* ContriesList */ = {
 			isa = PBXGroup;
 			children = (
@@ -103,6 +116,7 @@
 		FB9311D32BD68D5C001AD872 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				FB3B2A872BDBE8900054B797 /* AuthorizationPage */,
 				FB828BC72BD969C900680969 /* CountriesDetails */,
 				FB828BC62BD969B800680969 /* ContriesList */,
 			);
@@ -216,6 +230,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FB3B2A8D2BDC3D0B0054B797 /* AuthorizationViewModel.swift in Sources */,
 				FBF4F89C2BD53F15006B1C81 /* CountriesListViewController.swift in Sources */,
 				FBF4F8982BD53F15006B1C81 /* AppDelegate.swift in Sources */,
 				FB9311CF2BD67F52001AD872 /* UIImageView+Extension.swift in Sources */,
@@ -224,6 +239,7 @@
 				FBF4F89A2BD53F15006B1C81 /* SceneDelegate.swift in Sources */,
 				FBF4F8B02BD55218006B1C81 /* CountryDetailViewController.swift in Sources */,
 				FBF4F8AE2BD5499D006B1C81 /* Country.swift in Sources */,
+				FB3B2A892BDBE8FB0054B797 /* AuthorizationViewController.swift in Sources */,
 				FB828BCA2BD969FD00680969 /* CountryDetailViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

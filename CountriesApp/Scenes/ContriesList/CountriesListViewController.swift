@@ -26,6 +26,22 @@ class CountriesListViewController: UIViewController {
         setupTopBarText()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+           super.viewDidAppear(animated)
+           
+        if UserDefaults.standard.bool(forKey: "isFirstLogin") {
+                showWelcomeAlert()
+                UserDefaults.standard.set(false, forKey: "isFirstLogin")
+            }
+       }
+       
+       private func showWelcomeAlert() {
+           let alertController = UIAlertController(title: "გილოცავთ!", message: "თქვენ წარმატებით დარეგისტრირდით.", preferredStyle: .alert)
+           let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+           alertController.addAction(okAction)
+           present(alertController, animated: true, completion: nil)
+       }
+    
     //MARK: Setup
     private func setupTableView() {
         view.addSubview(tableView)
