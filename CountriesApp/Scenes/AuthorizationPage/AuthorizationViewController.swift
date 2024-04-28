@@ -19,6 +19,7 @@ class AuthorizationViewController: UIViewController, UIImagePickerControllerDele
     private let passwordTextField = UITextField()
     private let passwordCheckLabel = UILabel()
     private let passwordCheckTextField = UITextField()
+    private let errorLabel = UILabel()
     private let logInButton = UIButton()
     var countriesListViewController = CountriesListViewController()
     var viewModel = AuthorizationViewModel()
@@ -29,7 +30,6 @@ class AuthorizationViewController: UIViewController, UIImagePickerControllerDele
         setup()
         viewModel.delegate = self
         viewModel.viewDidLoad()
-        loadImageFromDocuments()
     }
     
     // MARK: - Setup
@@ -44,6 +44,7 @@ class AuthorizationViewController: UIViewController, UIImagePickerControllerDele
         setupPasswordCheckLabel()
         setupPasswordCheckTextField()
         setupLogInButton()
+        setupErrorLabel()
         
         mainStackView.setCustomSpacing(6, after: nameLabel)
         mainStackView.setCustomSpacing(30, after: nameTextField)
@@ -51,7 +52,7 @@ class AuthorizationViewController: UIViewController, UIImagePickerControllerDele
         mainStackView.setCustomSpacing(30, after: passwordTextField)
         mainStackView.setCustomSpacing(6, after: passwordCheckLabel)
         mainStackView.setCustomSpacing(50, after: passwordCheckTextField)
-        
+        mainStackView.setCustomSpacing(8, after: logInButton)
     }
     
     private func setupImageButtonStackView() {
@@ -63,66 +64,19 @@ class AuthorizationViewController: UIViewController, UIImagePickerControllerDele
         imageButtonStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         
         imageButtonStackView.isLayoutMarginsRelativeArrangement = true
-        imageButtonStackView.layoutMargins = UIEdgeInsets(top: 50, left: 120, bottom: 0, right: 120)
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageButtonTapped))
-        imageButton.addGestureRecognizer(tapGesture)
-        imageButton.isUserInteractionEnabled = true
-    }
-    
-    @objc private func imageButtonTapped() {
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.sourceType = .photoLibrary
-        present(imagePicker, animated: true, completion: nil)
+        imageButtonStackView.layoutMargins = UIEdgeInsets(top: -30, left: 120, bottom: 0, right: 120)
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let selectedImage = info[.originalImage] as? UIImage {
             imageButton.setImage(selectedImage, for: .normal)
-            saveImageToDocuments(image: selectedImage)
+            viewModel.saveImageToDocuments(image: selectedImage)
         }
         dismiss(animated: true, completion: nil)
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
-    }
-    
-    private func saveImageToDocuments(image: UIImage) {
-        let fileManager = FileManager.default
-        guard let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
-        
-        let imageURL = documentsDirectory.appendingPathComponent("profileImage.png")
-        guard let imageData = image.pngData() else { return }
-        
-        if fileManager.fileExists(atPath: imageURL.path) {
-            do {
-                try fileManager.removeItem(at: imageURL)
-            } catch {
-                print(error)
-            }
-        }
-        
-        do {
-            try imageData.write(to: imageURL)
-        } catch {
-            print(error)
-        }
-    }
-    
-    private func loadImageFromDocuments() {
-        let fileManager = FileManager.default
-        guard let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
-        
-        let imageURL = documentsDirectory.appendingPathComponent("profileImage.png")
-        
-        if fileManager.fileExists(atPath: imageURL.path) {
-            if let imageData = try? Data(contentsOf: imageURL),
-               let image = UIImage(data: imageData) {
-                imageButton.setImage(image, for: .normal)
-            }
-        }
     }
     
     // MARK: - Private Methods
@@ -157,6 +111,10 @@ class AuthorizationViewController: UIViewController, UIImagePickerControllerDele
         imageButton.setImage(image, for: .normal)
         imageButton.tintColor = UIColor(named: "sfSymbol")
         imageButton.backgroundColor = UIColor(named: "imageButtonBackground")
+        let action = UIAction { [weak self] _ in
+            self?.viewModel.imageButtonTapped()
+        }
+        imageButton.addAction(action, for: .touchUpInside)
         
         imageButtonStackView.addArrangedSubview(imageButton)
     }
@@ -219,6 +177,7 @@ class AuthorizationViewController: UIViewController, UIImagePickerControllerDele
         passwordTextField.leftViewMode = .always
         passwordTextField.font = UIFont.systemFont(ofSize: 12)
         passwordTextField.layer.cornerRadius = 20
+        passwordTextField.isSecureTextEntry = true
     }
     
     private func setupPasswordCheckLabel() {
@@ -246,6 +205,16 @@ class AuthorizationViewController: UIViewController, UIImagePickerControllerDele
         passwordCheckTextField.leftViewMode = .always
         passwordCheckTextField.font = UIFont.systemFont(ofSize: 12)
         passwordCheckTextField.layer.cornerRadius = 20
+        passwordCheckTextField.isSecureTextEntry = true
+    }
+    
+    private func setupErrorLabel() {
+        mainStackView.addArrangedSubview(errorLabel)
+        
+        errorLabel.textAlignment = .center
+        errorLabel.textColor = .red
+        errorLabel.font = UIFont.systemFont(ofSize: 12)
+        errorLabel.isHidden = true
     }
     
     private func setupLogInButton() {
@@ -257,13 +226,7 @@ class AuthorizationViewController: UIViewController, UIImagePickerControllerDele
         logInButton.titleLabel?.font = .systemFont(ofSize: 12)
         
         let action = UIAction { [weak self] _ in
-            guard let self,
-                  let username = nameTextField.text, !username.isEmpty,
-                  let password = passwordTextField.text, !password.isEmpty,
-                  let passwordCheck = passwordCheckTextField.text, !passwordCheck.isEmpty else {
-                return
-            }
-            self.viewModel.loginButtonDidTap(username: username, password: password, passwordCheck: passwordCheck)
+            self?.viewModel.loginButtonDidTap(username: self?.nameTextField.text, password: self?.passwordTextField.text, passwordCheck: self?.passwordCheckTextField.text)
         }
         logInButton.addAction(action, for: .touchUpInside)
         mainStackView.addArrangedSubview(logInButton)
@@ -272,6 +235,22 @@ class AuthorizationViewController: UIViewController, UIImagePickerControllerDele
 
 // MARK: - AuthorizationViewModelDelegate
 extension AuthorizationViewController: AuthorizationViewModelDelegate {
+    func showError(with error: String) {
+        errorLabel.text = error
+        errorLabel.isHidden = false
+    }
+    
+    func navigateToImagePicker() {
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = .photoLibrary
+        present(imagePicker, animated: true, completion: nil)
+    }
+    
+    func imageLoaded(_ image: UIImage) {
+        imageButton.setImage(image, for: .normal)
+    }
+    
     func navigateToCountriesPage() {
         navigationController?.pushViewController(countriesListViewController, animated: false)
     }

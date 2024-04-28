@@ -5,23 +5,50 @@
 //  Created by Bakar Kharabadze on 4/26/24.
 //
 
-import Foundation
+import UIKit
 import Security
-
 
 protocol AuthorizationViewModelDelegate : AnyObject {
     func navigateToCountriesPage()
+    func imageLoaded(_ image: UIImage)
+    func navigateToImagePicker()
+    func showError(with error: String)
 }
 
-class AuthorizationViewModel {
+final class AuthorizationViewModel {
     
     weak var delegate: AuthorizationViewModelDelegate?
     
+    //MARK: - Methods
     func viewDidLoad() {
+        loadImageFromDocuments()
         if let (username, password) = retrieveCredentialsFromKeychain() {
-            print("Automatically logged in with username: \(username)")
             delegate?.navigateToCountriesPage()
         }
+    }
+    
+    func saveImageToDocuments(image: UIImage) {
+        let fileManager = FileManager.default
+        guard let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
+        
+        let imageURL = documentsDirectory.appendingPathComponent("profileImage.png")
+        guard let imageData = image.pngData() else { return }
+        
+        if fileManager.fileExists(atPath: imageURL.path) {
+            do {
+                try fileManager.removeItem(at: imageURL)
+            } catch {
+            }
+        }
+        
+        do {
+            try imageData.write(to: imageURL)
+        } catch {
+        }
+    }
+    
+    func imageButtonTapped() {
+        delegate?.navigateToImagePicker()
     }
     
     func saveCredentialsToKeychain(_ username: String, _ password: String, _ passwordCheck: String) {
@@ -76,20 +103,39 @@ class AuthorizationViewModel {
         SecItemDelete(query as CFDictionary)
     }
     
-    func loginButtonDidTap(username: String, password: String, passwordCheck: String) {
-        guard !username.isEmpty, !password.isEmpty, !passwordCheck.isEmpty else {
+    func loginButtonDidTap(username: String?, password: String?, passwordCheck: String?) {
+        guard let username, let password, let passwordCheck,
+              !username.isEmpty, !password.isEmpty, !passwordCheck.isEmpty else {
+            delegate?.showError(with: "ყველა ველი უნდა იყოს შეყვანილი")
             return
         }
+        
         guard password == passwordCheck else {
+            delegate?.showError(with: "შეიყვანეთ პაროლი სწორად")
             return
         }
         
         saveCredentialsToKeychain(username, password, passwordCheck)
         if !UserDefaults.standard.bool(forKey: "hasLoggedInBefore") {
-               UserDefaults.standard.set(true, forKey: "isFirstLogin")
-               UserDefaults.standard.set(true, forKey: "hasLoggedInBefore")
-           }
-        
+            UserDefaults.standard.set(true, forKey: "isFirstLogin")
+            UserDefaults.standard.set(true, forKey: "hasLoggedInBefore")
+        } else {
+            UserDefaults.standard.set(false, forKey: "isFirstLogin")
+        }
         delegate?.navigateToCountriesPage()
+    }
+    
+    private func loadImageFromDocuments() {
+        let fileManager = FileManager.default
+        guard let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
+        
+        let imageURL = documentsDirectory.appendingPathComponent("profileImage.png")
+        
+        if fileManager.fileExists(atPath: imageURL.path) {
+            if let imageData = try? Data(contentsOf: imageURL),
+               let image = UIImage(data: imageData) {
+                delegate?.imageLoaded(image)
+            }
+        }
     }
 }

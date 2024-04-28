@@ -23,23 +23,14 @@ class CountriesListViewController: UIViewController {
         self.setupSearchController()
         viewModel.delegate = self
         viewModel.viewDidLoad()
-        setupTopBarText()
+        hideBackButton()
     }
     
     override func viewDidAppear(_ animated: Bool) {
            super.viewDidAppear(animated)
            
-        if UserDefaults.standard.bool(forKey: "isFirstLogin") {
-                showWelcomeAlert()
-                UserDefaults.standard.set(false, forKey: "isFirstLogin")
-            }
-       }
-       
-       private func showWelcomeAlert() {
-           let alertController = UIAlertController(title: "გილოცავთ!", message: "თქვენ წარმატებით დარეგისტრირდით.", preferredStyle: .alert)
-           let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-           alertController.addAction(okAction)
-           present(alertController, animated: true, completion: nil)
+        viewModel.viewDidAppear()
+            
        }
     
     //MARK: Setup
@@ -64,8 +55,8 @@ class CountriesListViewController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
     }
     
-    private func setupTopBarText() {
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+    private func hideBackButton() {
+        navigationItem.hidesBackButton = true
     }
     
     private func setupSearchController() {
@@ -89,7 +80,6 @@ extension CountriesListViewController: UISearchResultsUpdating {
 // MARK: - UITableViewDataSource
 extension CountriesListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //viewModel.info.count
         let inSearchMode = self.viewModel.inSearchMode(searchController)
         return inSearchMode ? self.viewModel.filteredInfo.count : self.viewModel.info.count
     }
@@ -130,4 +120,11 @@ extension CountriesListViewController: CountriesListViewModelDelegate {
         vc.viewModel = CountryDetailViewModel(info: model)
         navigationController?.pushViewController(vc, animated: false)
     }
+    
+    func showWelcomeAlert() {
+           let alertController = UIAlertController(title: "მოგესალმებით!", message: "კეთილი იყოს თქვენი მობრძანება.", preferredStyle: .alert)
+           let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+           alertController.addAction(okAction)
+           present(alertController, animated: true, completion: nil)
+       }
 }

@@ -10,6 +10,7 @@ import Foundation
 protocol CountriesListViewModelDelegate: AnyObject {
     func updateUI()
     func navigateToCountryDetail(with model: Country)
+    func showWelcomeAlert()
 }
 
 class CountriesListViewModel {
@@ -22,6 +23,13 @@ class CountriesListViewModel {
     
     func viewDidLoad() {
         fetchData()
+    }
+    
+    func viewDidAppear() {
+        if UserDefaults.standard.bool(forKey: "isFirstLogin") {
+            delegate?.showWelcomeAlert()
+                UserDefaults.standard.set(false, forKey: "isFirstLogin")
+            }
     }
     
     private func sortCountriesByName() {
